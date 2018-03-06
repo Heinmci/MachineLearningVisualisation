@@ -15,4 +15,7 @@ public class LibWrapper {
 
 	[DllImport("unity_rust")]
 	public static extern int classify_point(System.IntPtr coeff, double[] point);
+
+	[DllImport("unity_rust")]
+	public static extern double get_weight(System.IntPtr coeff, int weight);
 }
