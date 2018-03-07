@@ -10,30 +10,23 @@ public class MoveScript : MonoBehaviour {
 	private Transform[] trainningExample;
 	// Use this for initialization
 	void Start () {
-		Debug.Log("azeaz");
 		System.IntPtr coeff = LibWrapper.linear_create();
-		double[] points = {trainningExample[0].position.x,trainningExample[0].position.z,-1,trainningExample[1].position.x,trainningExample[1].position.z,-1,trainningExample[2].position.x,trainningExample[2].position.z,1};
+	
+		double[] points = new double[trainningExample.Length *3];
+		for(int i =0; i<trainningExample.Length;i++) {
+			points[i*3] = trainningExample[i].position.x;
+			points[i*3+1] = trainningExample[i].position.z;
+			points[i*3+2] = (trainningExample[i].position.y > 0)?1:-1;
+		} 
 		Debug.Log(points[0]);
 		Debug.Log(points[1]);
 		Debug.Log(points[2]);
 		Debug.Log(points[3]);
 		Debug.Log(points[4]);
-		Debug.Log(points[5]);
-		Debug.Log(points[6]);
-		Debug.Log(points[7]);
-		Debug.Log(points[8]);
-		LibWrapper.linear_train_classification(coeff,points);
-		Debug.Log(LibWrapper.get_weight(coeff, 0));
-		Debug.Log(LibWrapper.get_weight(coeff, 1));
-		Debug.Log(LibWrapper.get_weight(coeff, 2));
-
-		double[] point1 = {trainningExample[0].position.x,trainningExample[0].position.z};
-		Debug.Log(LibWrapper.classify_point(coeff, point1));
-		double[] point2 = {trainningExample[1].position.x,trainningExample[1].position.z};
-		Debug.Log(LibWrapper.classify_point(coeff, point2));
-		double[] point3 = {trainningExample[2].position.x,trainningExample[2].position.z};
-		Debug.Log(LibWrapper.classify_point(coeff, point3));
-
+		//double[] points= {trainningExample[0].position.x,trainningExample[0].position.z,(trainningExample[0].position.y > 0)?1:-1,trainningExample[1].position.x,trainningExample[1].position.z,(trainningExample[1].position.y > 0)?1:-1,trainningExample[2].position.x,trainningExample[2].position.z,(trainningExample[2].position.y > 0)?1:-1,trainningExample[3].position.x,trainningExample[3].position.z,(trainningExample[3].position.y > 0)?1:-1};
+		
+		LibWrapper.linear_train_classification(coeff,points,12);
+		
 		foreach (var sphere in sphereTransforms){
 			double[] point = {sphere.position.x,sphere.position.z};
 			int result = LibWrapper.classify_point(coeff,point);
@@ -44,7 +37,7 @@ public class MoveScript : MonoBehaviour {
 				sphere.position += Vector3.up;
 			}
 			
-		}
+		} 
 		
 	}
 	
