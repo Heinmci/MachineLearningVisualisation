@@ -25,7 +25,7 @@ public class MoveScript : MonoBehaviour {
 		Debug.Log(points[4]);
 		//double[] points= {trainningExample[0].position.x,trainningExample[0].position.z,(trainningExample[0].position.y > 0)?1:-1,trainningExample[1].position.x,trainningExample[1].position.z,(trainningExample[1].position.y > 0)?1:-1,trainningExample[2].position.x,trainningExample[2].position.z,(trainningExample[2].position.y > 0)?1:-1,trainningExample[3].position.x,trainningExample[3].position.z,(trainningExample[3].position.y > 0)?1:-1};
 		
-		LibWrapper.linear_train_classification(coeff,points,12);
+		LibWrapper.linear_train_classification(coeff,points,trainningExample.Length *3);
 		
 		foreach (var sphere in sphereTransforms){
 			double[] point = {sphere.position.x,sphere.position.z};
