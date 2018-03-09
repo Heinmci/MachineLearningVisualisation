@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MoveScriptClassification : MonoBehaviour {
+public class MoveScriptMLPClassification : MonoBehaviour {
 
 	[SerializeField]
 	private Transform[] sphereTransforms;
@@ -10,24 +10,24 @@ public class MoveScriptClassification : MonoBehaviour {
 	private Transform[] trainningExample;
 	// Use this for initialization
 	void Start () {
-		int nbinputs = 3;
-		System.IntPtr coeff = LibWrapper.linear_create(nbinputs);
+		int[] size = {2,10,10,1};
+		System.IntPtr coeff = LibWrapper.create_MLP(size,4);
 	
 		double[] points = new double[trainningExample.Length *3];
 		for(int i =0; i<trainningExample.Length;i++) {
-			points[i*3] = (trainningExample[i].position.y > 0)?1:-1;
-			points[i*3+1] = trainningExample[i].position.x;
-			points[i*3+2] = trainningExample[i].position.z;
+			points[i*3] = trainningExample[i].position.x /10;
+			points[i*3+1] = trainningExample[i].position.z /10;
+			points[i*3+2] = (trainningExample[i].position.y > 0)?1:-1;
 		} 
-		int ok = LibWrapper.linear_train_classification(coeff,points,trainningExample.Length,trainningExample.Length *3);
-		if(ok == 0) {
+		LibWrapper.mlp_train_classification(coeff,points,trainningExample.Length *3,800000);
+		/*if(ok == 0) {
 			Debug.Log("KO");
 		} else {
 			Debug.Log("OK");
-		}
+		}*/
 		foreach (var sphere in sphereTransforms){
-			double[] point = {sphere.position.x,sphere.position.z};
-			double result = LibWrapper.classify_point(coeff,point, 2);
+			double[] point = {sphere.position.x/10,sphere.position.z/10};
+			double result = LibWrapper.mlp_classify(coeff,point);
 			//Debug.Log(result);
 			if(result <0) {
 				sphere.position += Vector3.down;
