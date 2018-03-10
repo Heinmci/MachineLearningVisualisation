@@ -27,15 +27,15 @@ public class LibWrapper {
 	public static extern System.IntPtr create_MLP(int[] mlp, int lenght);
 
 	[DllImport("unity_rust")]
-	public static extern void mlp_train_classification(System.IntPtr coeff, double[] points,int lenght, int itr);
+	public static extern void mlp_train_classification(System.IntPtr coeff, double[] points, int nbExemple, int lenght, int itr);
 
 	[DllImport("unity_rust")]
-	public static extern double mlp_classify(System.IntPtr coeff, double[] point);
+	public static extern double mlp_classify(System.IntPtr coeff, double[] point, int lenght);
 	
 	[DllImport("unity_rust")]
-	public static extern void mlp_train_regression(System.IntPtr coeff, double[] points,int lenght, int itr);
+	public static extern void mlp_train_regression(System.IntPtr coeff, double[] points, int nbExemple,int lenght, int itr);
 
 	[DllImport("unity_rust")]
-	public static extern double mlp_regress(System.IntPtr coeff, double[] point);
+	public static extern double mlp_regress(System.IntPtr coeff, double[] point, int lenght);
 	
 }

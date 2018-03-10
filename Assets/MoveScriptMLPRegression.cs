@@ -15,11 +15,11 @@ public class MoveScriptMLPRegression : MonoBehaviour {
 	
 		double[] points = new double[trainningExample.Length *3];
 		for(int i =0; i<trainningExample.Length;i++) {
-			points[i*3] = trainningExample[i].position.x /10;
-			points[i*3+1] = trainningExample[i].position.z /10;
-			points[i*3+2] = trainningExample[i].position.y/10;
+			points[i*3] = trainningExample[i].position.y /10;
+			points[i*3+1] = trainningExample[i].position.x /10;
+			points[i*3+2] = trainningExample[i].position.z/10;
 		} 
-		LibWrapper.mlp_train_regression(coeff,points,trainningExample.Length *3,800000);
+		LibWrapper.mlp_train_regression(coeff,points,trainningExample.Length, trainningExample.Length *3,800000);
 		/*if(ok == 0) {
 			Debug.Log("KO");
 		} else {
@@ -27,7 +27,7 @@ public class MoveScriptMLPRegression : MonoBehaviour {
 		}*/
 		foreach (var sphere in sphereTransforms){
 			double[] point = {sphere.position.x/10,sphere.position.z/10};
-			float result = (float)LibWrapper.mlp_regress(coeff,point);
+			float result = (float)LibWrapper.mlp_regress(coeff,point,2);
 			sphere.position += Vector3.up * result*10;
 			
 		} 
